@@ -18,7 +18,7 @@ class PHPT_Section_PRESKIPIF implements PHPT_Section_RunnableBefore
         
         // @todo refactor to PHPT_CodeRunner
         file_put_contents($filename, $this->_data);
-        $runner = $this->_runner_factory->factory($case);
+        $runner = $this->_runner_factory->factory(clone $case);
         $runner->ini = "";
         $response = $runner->run($filename)->output;
         unlink($filename);
