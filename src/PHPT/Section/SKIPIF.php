@@ -3,10 +3,12 @@
 class PHPT_Section_SKIPIF implements PHPT_Section_RunnableBefore
 {
     private $_data = null;
+    private $_runner_factory = null;
     
     public function __construct($data)
     {
         $this->_data = $data;
+        $this->_runner_factory = new PHPT_CodeRunner_Factory();
     }
     
     public function run(PHPT_Case $case)
@@ -16,9 +18,8 @@ class PHPT_Section_SKIPIF implements PHPT_Section_RunnableBefore
         
         // @todo refactor to PHPT_CodeRunner
         file_put_contents($filename, $this->_data);
-        $response = array();
-        exec('php -f ' . $filename, $response);
-        $response = implode(PHP_EOL, $response);
+        $runner = $this->_runner_factory->factory(clone $case);
+        $response = $runner->run($filename)->output;
         unlink($filename);
         
         if (preg_match('/^skip( - (.*))?/', $response, $matches)) {
