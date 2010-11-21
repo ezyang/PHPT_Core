@@ -69,7 +69,7 @@ class PHPT_CodeRunner_Driver_WScriptShell extends PHPT_CodeRunner_Driver_Abstrac
 
         $error = $this->_process->StdErr->ReadAll();
         if (!empty($error)) {
-            throw new PHPT_CodeRunner_ExecutionException($error);
+            throw new PHPT_CodeRunner_ExecutionException($error, $this->_commandFactory());
         }
 
         return $this->_process->StdOut->ReadAll();
@@ -93,6 +93,7 @@ class PHPT_CodeRunner_Driver_WScriptShell extends PHPT_CodeRunner_Driver_Abstrac
     {
         $return = '';
         foreach ($this->environment as $key => $value) {
+            $value = str_replace('&', '^&', $value);
             $return .= "set {$key}={$value} & ";
         }
         return $return;

@@ -33,7 +33,13 @@ class PHPT_CodeRunner_Factory
                 'php-cgi';
         }
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+        if (
+            strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' &&
+            (
+                $runner->executable == 'php' ||
+                $runner->executable == 'php-cgi'
+            )
+        ) {
             $runner->executable = $runner->executable . '.exe';
         }
         try {
