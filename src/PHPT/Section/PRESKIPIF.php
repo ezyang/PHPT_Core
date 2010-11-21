@@ -31,6 +31,6 @@ class PHPT_Section_PRESKIPIF implements PHPT_Section_RunnableBefore
     
     public function getPriority()
     {
-        return -2;
+        return 0;
     }
 }
